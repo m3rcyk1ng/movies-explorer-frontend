@@ -1,0 +1,47 @@
+.movie-card__button_saved {
+    background-color: var(--gray_color);
+    background-image: url('../../assets/images/heart.svg');
+    background-repeat: no-repeat;
+    background-size: 10px 8.5px;
+    background-position: center;
+    padding: 12px;
+    border: none;
+    border-radius: 50%;
+}
+
+.movie-card__button_saved:hover {
+    cursor: pointer;
+    opacity: .7;
+}
+
+.movie-card__button_save {
+    background-color: var(--gray_color);
+    background-image: url('../../assets/images/heart-white.svg');
+    background-repeat: no-repeat;
+    background-size: 10px 8.5px;
+    background-position: center;
+    padding: 12px;
+    border-radius: 50%;
+    border: none;
+}
+
+.movie-card__button_save:hover {
+    cursor: pointer;
+    opacity: .7;
+}
+
+.movie-card__button-delete {
+    background-color: #F9F9F9;
+    background-image: url('../../assets/images/delete-icon.svg');
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 12px 12px;
+    border: none;
+    margin: 0;
+    border-radius: 30px;
+}
+
+.movie-card__button-delete:hover {
+    cursor: pointer;
+    opacity: .7;
+}

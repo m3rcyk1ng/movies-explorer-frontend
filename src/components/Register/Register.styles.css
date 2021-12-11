@@ -1,0 +1,18 @@
+.register {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0 auto;
+    max-width: 396px;
+    padding: 70px;
+    min-height: 560px;
+}
+
+@media screen and (max-width: 767px) {
+    .register {
+        padding: 56px 30px 30px;
+        align-items: center;
+    }
+}
+
