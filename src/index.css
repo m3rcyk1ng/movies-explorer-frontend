@@ -1,0 +1,32 @@
+@import url(./assets/fonts.css);
+
+.body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0;
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+:root { --blue_color: #465DFF }
+:root { --gray_color: #F5F5F5 }
+:root { --gray_button_color: #E8E8E8 }
+:root { --grey_text: #6c6c6c
+}
+:root { --orange_button: #FF6838}
+:root { --orange_text: #FF6838}
+:root { --green_color: #2BE080}
+:root { --pink_color: #EE3465}
+/*div, p, h1, h2, h3, ul, li, a, img, section {*/
+/*   outline: 1.5px red dashed;*/
+/*}*/
