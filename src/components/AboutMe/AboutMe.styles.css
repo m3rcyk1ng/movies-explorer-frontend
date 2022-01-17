@@ -12,10 +12,10 @@
     font-size: 22px;
     line-height: 27px;
     font-weight: 400;
-    border-bottom: 1px solid #000000;
+    border-bottom: 1px solid black;
     box-shadow: 0 3px 0 0 rgba(184, 184, 184, 0.25);
     padding-bottom: 23px;
-    margin: 110px 0 0;
+    margin: 110px 0 70px;
     letter-spacing: -0.04em;
 }
 

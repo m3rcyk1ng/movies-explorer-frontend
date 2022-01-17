@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './Navigation.styles.css';
 import { NavLink } from 'react-router-dom';
-import * as events from "events";
+import { navigation } from "../../common/constants";
 
-function Navigation() {
+function Navigation({ loggedIn }: any) {
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
 
   function handleClickOpenMenu() {
@@ -23,7 +23,7 @@ function Navigation() {
         className={`navigation__overlay${isOpenMenu ? ' navigation__overlay_display_flex' : ''}`}
         onClick={handleClickCloseMenu}
       >
-        <div className="navigation__container">
+        <div className={`${loggedIn ? 'navigation__container_logged-in' : 'navigation__container'}`}>
           <button className="navigation__icon-close" />
           <NavLink
             to="/"
@@ -31,31 +31,34 @@ function Navigation() {
               `navigation__link ${isActive && 'navigation__link_active'}`
             }
           >
-            Главная
+            {navigation.Main}
           </NavLink>
           <NavLink
             to="/movies"
             className={({ isActive }) =>
-              `navigation__link ${isActive && 'navigation__link_active'}`
+              `${loggedIn ? `navigation__link_logged-in` : `navigation__link`} ${
+                isActive && 'navigation__link_active'
+              }`
             }
           >
-            Фильмы
+            {navigation.Films}
           </NavLink>
           <NavLink
             to="/saved-movies"
             className={({ isActive }) =>
-              `navigation__link ${isActive && 'navigation__link_active'}`
+              `${loggedIn ? `navigation__link_logged-in` : `navigation__link`}
+              ${isActive && 'navigation__link_active'}`
             }
           >
-            Сохранённые фильмы
+            {navigation.SavedFilms}
           </NavLink>
           <NavLink
             to="/profile"
             className={({ isActive }) =>
-              `navigation__btn-account ${isActive && 'navigation__link_active'}`
+              `${loggedIn ? `navigation__btn-account_logged-in` : `navigation__btn-account`} ${isActive && 'navigation__link_active'}`
             }
           >
-            Аккаунт
+            {navigation.Account}
           </NavLink>
         </div>
       </div>

@@ -1,5 +1,5 @@
 .movie-card__button_saved {
-    background-color: var(--gray_color);
+    background-color: black;
     background-image: url('../../assets/images/heart.svg');
     background-repeat: no-repeat;
     background-size: 10px 8.5px;
