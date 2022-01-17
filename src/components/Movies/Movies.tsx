@@ -55,7 +55,10 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
 
   useEffect(() => {
     const localMovies = localStorage.getItem('userFilms');
-    if (!localMovies) {
+
+    if (localMovies) {
+      setUserMovies(JSON.parse(localMovies));
+    } else {
       setIsLoadingMovies(true);
       mainApi.getSavedMovies().then((res) => {
         const actualSavedFilms = checkCurrentUserMovies(res.data)
@@ -65,8 +68,7 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
       })
         .catch(console.log)
         .finally(() => setIsLoadingMovies(false));
-    } else {
-      setUserMovies(JSON.parse(localMovies));
+
     }
   }, []);
 
@@ -81,10 +83,13 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
   }, [userMovies])
 
   function handleDeleteCard(movie: IMovie) {
-    const movieId = movie._id ?? '';
+
+    const currMovie = userMovies.find((userMovie: { movieId: number; }) => userMovie.movieId === movie.movieId)
+    const movieId = currMovie?._id
+    // @ts-ignore
     mainApi.deleteMovie(movieId)
       .then(() => {
-        const newUserMovies = userMovies.filter(movie => movie._id !== movieId);
+        const newUserMovies = userMovies.filter((movie: IMovie) => movie._id !== movieId);
         setUserMovies(newUserMovies);
       })
       .catch(console.log)
@@ -94,6 +99,7 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
     delete movie.owner;
     mainApi.saveMovie(movie)
       .then((res) => {
+        console.log(res);
         setUserMovies([...userMovies, res.data])
       })
       .catch(console.log)

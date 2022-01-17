@@ -18,7 +18,10 @@ function SavedMovies({ loggedIn, amountShowCards, setAmountShowCards, addShowCar
 
   useEffect(() => {
     const localMovies = localStorage.getItem('userFilms');
-    if (!localMovies) {
+
+    if (localMovies) {
+      setUserMovies(JSON.parse(localMovies));
+    } else {
       mainApi
         .getSavedMovies()
         .then((res) => {
@@ -27,8 +30,6 @@ function SavedMovies({ loggedIn, amountShowCards, setAmountShowCards, addShowCar
           setUserMovies(actualSavedFilms);
         })
         .catch(console.log);
-    } else {
-      setUserMovies(JSON.parse(localMovies));
     }
   }, []);
 
@@ -39,12 +40,15 @@ function SavedMovies({ loggedIn, amountShowCards, setAmountShowCards, addShowCar
   }
 
   function handleCardDelete(movie: IMovie) {
-    console.log('hello', movie);
-    const movieId = movie._id ? movie._id : '';
+    const currMovie = userMovies.find((userMovie: { movieId: number; }) => userMovie.movieId === movie.movieId)
+    const movieId = currMovie?._id
+
+    // @ts-ignore
     mainApi.deleteMovie(movieId)
       .then(() => {
-        const newUserMovies = userMovies.filter(movie => movie._id !== movieId);
+        const newUserMovies = userMovies.filter((movie: IMovie) => movie._id !== movieId);
         setUserMovies(newUserMovies);
+        localStorage.setItem('userFilms',  JSON.stringify(newUserMovies));
       })
       .catch(console.log)
   }
@@ -69,11 +73,6 @@ function SavedMovies({ loggedIn, amountShowCards, setAmountShowCards, addShowCar
     const localFilterSavedCards = localStorage.getItem('filterSavedCards')
     if (localFilterSavedCards) setUserMovies(JSON.parse(localFilterSavedCards));
   }
-
-  useEffect(() => {
-    const localFilterSaveCards = localStorage.getItem('filterSavedCards');
-    localFilterSaveCards ? setUserMovies(JSON.parse(localFilterSaveCards)) : setUserMovies([]);
-  }, []);
 
   return (
     <>

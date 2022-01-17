@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useEffect, useState } from 'react';
 import MovieCardButton from '../MovieCardButton/MovieCardButton';
 import './MoviesCard.styles.css';
 import { IMovieCardProps } from "./IMoviesCard";
@@ -23,18 +23,17 @@ function MoviesCard({ userMovies, movie, handleCardDelete, handleCardSave}: IMov
       if (userMovie.movieId === movie.movieId) {
         setIsLike(true);
         movie._id = userMovie._id;
-      } else {
-        setIsLike(false);
-        delete movie._id;
       }
     });
-  }, [userMovies, movie]);
+  }, [userMovies]);
 
   function handleCardToggle() {
+    setIsLike(!isLike)
     if (isLike) {
+      delete movie._id;
       handleCardDelete(movie)
     } else {
-      if (handleCardSave !== undefined) {
+      if (handleCardSave) {
         handleCardSave(movie);
       }
     }
