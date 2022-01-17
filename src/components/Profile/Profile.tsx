@@ -63,7 +63,7 @@ function Profile({ loggedIn, handleSignOut, handleEditProfile }: any) {
           <span className="profile__error_message">
             {validateEmail(values.email) && 'Email не валиден'}
           </span>
-          <button className="profile__button-edit" type="submit" disabled={!isValid} >
+          <button className="profile__button-edit" type="submit" disabled={!isValid || validateEmail(values.email)} >
             {profile.Edit}
           </button>
         </form>

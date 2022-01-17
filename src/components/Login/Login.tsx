@@ -6,8 +6,9 @@ import { Link } from 'react-router-dom';
 import logo from '../../assets/images/logo.svg';
 import '../Header/Header.styles.css';
 import { login } from "../../common/constants";
+import { ILoginProps } from "./ILoginProps";
 
-function Login({ handleLogin }: any) {
+function Login({ handleLogin }: ILoginProps) {
 
   function handleSubmitForm(values: any) {
     handleLogin(values);

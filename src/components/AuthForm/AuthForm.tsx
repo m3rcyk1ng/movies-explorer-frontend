@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import './AuthForm.styles.css';
 import { authForm } from '../../common/constants';
@@ -6,7 +6,7 @@ import { useFormWithValidation } from "../../utils/FormValidator/FormValidator";
 
 function AuthForm({ buttonText, textDescription, textLink, handleSubmitForm }: any) {
   const { pathname } = useLocation();
-  const { values, handleChange, errors, isValid, resetForm } = useFormWithValidation();
+  const { values, handleChange, errors, isValid } = useFormWithValidation();
 
   function handleSubmit(evt: any) {
     evt.preventDefault();
@@ -77,12 +77,16 @@ function AuthForm({ buttonText, textDescription, textLink, handleSubmitForm }: a
           </button>
           <div className="auth-form__sign-container">
             <p className="auth-form__caption">{textDescription}</p>
-            <Link to="/signin" className="auth-form__link">
-              {textLink}
-            </Link>
-            <Link to="/signup" className="auth-form__link">
-              {textLink}
-            </Link>
+            { pathname === '/signup' && (
+              <Link to="/signin" className="auth-form__link">
+                {textLink}
+              </Link>
+            )}
+            { pathname === '/signin' && (
+              <Link to="/signup" className="auth-form__link">
+                {textLink}
+              </Link>
+            )}
           </div>
         </div>
       </form>

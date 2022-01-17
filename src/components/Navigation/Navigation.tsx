@@ -3,7 +3,7 @@ import './Navigation.styles.css';
 import { NavLink } from 'react-router-dom';
 import { navigation } from "../../common/constants";
 
-function Navigation({ loggedIn }: any) {
+function Navigation() {
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
 
   function handleClickOpenMenu() {
@@ -23,7 +23,7 @@ function Navigation({ loggedIn }: any) {
         className={`navigation__overlay${isOpenMenu ? ' navigation__overlay_display_flex' : ''}`}
         onClick={handleClickCloseMenu}
       >
-        <div className={`${loggedIn ? 'navigation__container_logged-in' : 'navigation__container'}`}>
+        <div className="navigation__container">
           <button className="navigation__icon-close" />
           <NavLink
             to="/"
@@ -36,9 +36,7 @@ function Navigation({ loggedIn }: any) {
           <NavLink
             to="/movies"
             className={({ isActive }) =>
-              `${loggedIn ? `navigation__link_logged-in` : `navigation__link`} ${
-                isActive && 'navigation__link_active'
-              }`
+              `navigation__link ${isActive && 'navigation__link_active'}`
             }
           >
             {navigation.Films}
@@ -46,8 +44,7 @@ function Navigation({ loggedIn }: any) {
           <NavLink
             to="/saved-movies"
             className={({ isActive }) =>
-              `${loggedIn ? `navigation__link_logged-in` : `navigation__link`}
-              ${isActive && 'navigation__link_active'}`
+              `navigation__link ${isActive && 'navigation__link_active'}`
             }
           >
             {navigation.SavedFilms}
@@ -55,7 +52,7 @@ function Navigation({ loggedIn }: any) {
           <NavLink
             to="/profile"
             className={({ isActive }) =>
-              `${loggedIn ? `navigation__btn-account_logged-in` : `navigation__btn-account`} ${isActive && 'navigation__link_active'}`
+              `navigation__btn-account ${isActive && 'navigation__link_active'}`
             }
           >
             {navigation.Account}

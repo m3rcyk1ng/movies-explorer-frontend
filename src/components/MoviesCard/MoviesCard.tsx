@@ -22,10 +22,10 @@ function MoviesCard({ userMovies, movie, handleCardDelete, handleCardSave}: IMov
     userMovies.map((userMovie) => {
       if (userMovie.movieId === movie.movieId) {
         setIsLike(true);
-        // movie._id = userMovie._id;
+        movie._id = userMovie._id;
       } else {
         setIsLike(false);
-        // delete movie._id;
+        delete movie._id;
       }
     });
   }, [userMovies, movie]);

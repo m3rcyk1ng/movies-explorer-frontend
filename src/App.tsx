@@ -46,12 +46,7 @@ function App() {
         localStorage.removeItem('filterSavedCards')
         localStorage.removeItem('moviesTumbler')
         localStorage.removeItem('userFilms')
-        localStorage.removeItem('')
-        localStorage.removeItem('')
-        localStorage.removeItem('')
-        localStorage.removeItem('')
-
-
+        localStorage.removeItem('moviesInputValue')
         navigate('/')
       })
       .catch(console.log);
@@ -59,7 +54,7 @@ function App() {
 
   function handleEditProfile(values: any) {
     mainApi.editUserInfo(values)
-      .then((res) => {
+      .then(() => {
         setCurrentUser(values)
       })
       .catch(console.log);
@@ -75,6 +70,7 @@ function App() {
       .catch(err => {
         setLoggedIn(false)
         setCurrentUser({})
+        console.log(err)
       })
   },[])
 

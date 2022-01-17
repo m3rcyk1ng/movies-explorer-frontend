@@ -13,7 +13,3 @@ export interface IMovie {
   nameEN: string;
   _id?: string;
 }
-
-export interface IMovieSearch {
-  arrayForSearch: any[];
-}

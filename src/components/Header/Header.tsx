@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import './Header.styles.css';
 import logo from '../../assets/images/logo.svg';
 import { buttons } from '../../common/constants';
@@ -8,10 +8,6 @@ import { useLocation, Link } from 'react-router-dom';
 function Header({ loggedIn }: any) {
   const { pathname } = useLocation();
 
-
-  useEffect(() => {
-    console.log('loggedIn', loggedIn);
-  }, [loggedIn])
   return (
     <header className={`header ${pathname === '/' ? 'header__blue-theme' : ''}`}>
       <div className="header__container">

@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import './MoviesCardList.styles.css';
-import { useLocation } from 'react-router-dom';
 import { ICardListProps } from './IMoviesCardList';
 import ButtonMore from '../ButtonMore/ButtonMore';
 
 function MoviesCardList({
-                          tumbler,
-                          renderFilms,
-                          handleCardDelete,
-                          handleCardSave,
-                          userMovies,
-                          amountShowCards,
-                          setAmountShowCards,
-                          addShowCards,
-                        }: ICardListProps) {
-  const { pathname } = useLocation();
-
+  tumbler,
+  renderFilms,
+  handleCardDelete,
+  handleCardSave,
+  userMovies,
+  amountShowCards,
+  setAmountShowCards,
+  addShowCards,
+}: ICardListProps) {
   const [moreButton, setMoreButton] = useState(true);
 
   useEffect(() => {
@@ -36,7 +33,7 @@ function MoviesCardList({
   return (
     <section className="movies-list">
       <div className="movies-list__container">
-        {tumblerFilteredArray.map((movie) => (
+        {tumblerFilteredArray.slice(0, amountShowCards).map((movie) => (
           <MoviesCard
             movie={movie}
             handleCardDelete={handleCardDelete}
