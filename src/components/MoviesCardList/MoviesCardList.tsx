@@ -3,6 +3,7 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 import './MoviesCardList.styles.css';
 import { ICardListProps } from './IMoviesCardList';
 import ButtonMore from '../ButtonMore/ButtonMore';
+import Preloader from "../Preloader/Preloader";
 
 function MoviesCardList({
   tumbler,
@@ -13,6 +14,7 @@ function MoviesCardList({
   amountShowCards,
   setAmountShowCards,
   addShowCards,
+  isLoadingMovies,
 }: ICardListProps) {
   const [moreButton, setMoreButton] = useState(true);
 
@@ -33,7 +35,11 @@ function MoviesCardList({
   return (
     <section className="movies-list">
       <div className="movies-list__container">
-        {tumblerFilteredArray.slice(0, amountShowCards).map((movie) => (
+        {isLoadingMovies ?
+          <div className="movies-preloader">
+            <Preloader />
+          </div>
+            : tumblerFilteredArray.slice(0, amountShowCards).map((movie) => (
           <MoviesCard
             movie={movie}
             handleCardDelete={handleCardDelete}

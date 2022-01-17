@@ -20,6 +20,7 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
   const { currentUser } = React.useContext(CurrentUserContext)
   const [errorText, setErrorText] = useState('');
   const [error, setError] = useState(false);
+  const [isLoadingMovies , setIsLoadingMovies] = useState(false);
 
   function formatMovies(movies: any) {
     return movies.map((movie: any) => {
@@ -55,12 +56,15 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
   useEffect(() => {
     const localMovies = localStorage.getItem('userFilms');
     if (!localMovies) {
+      setIsLoadingMovies(true);
       mainApi.getSavedMovies().then((res) => {
         const actualSavedFilms = checkCurrentUserMovies(res.data)
         localStorage.setItem('userFilms', JSON.stringify(actualSavedFilms));
         setUserMovies(actualSavedFilms);
         console.log('res', res);
-      });
+      })
+        .catch(console.log)
+        .finally(() => setIsLoadingMovies(false));
     } else {
       setUserMovies(JSON.parse(localMovies));
     }
@@ -96,6 +100,8 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
   }
 
   function handleMoviesFilter(arrayForSearch: IMovie[], query: string) {
+    setIsLoadingMovies(true);
+    setTimeout(() => setIsLoadingMovies(false), 1500)
     const newArray: IMovie[] = arrayForSearch.filter((card) => {
       if (card.nameRU.toLowerCase().includes(query)) {
         return card;
@@ -146,6 +152,7 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
           <p className="error-text">{errorText}</p>
         ) : (
           <MoviesCardList
+            isLoadingMovies={isLoadingMovies}
             renderFilms={renderFilms}
             handleCardDelete={handleDeleteCard}
             userMovies={userMovies}

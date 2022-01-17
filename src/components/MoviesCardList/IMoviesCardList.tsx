@@ -10,4 +10,5 @@ export interface ICardListProps {
   tumbler: boolean;
   setAmountShowCards: IButtonMore;
   addShowCards: number;
+  isLoadingMovies?: boolean;
 }
