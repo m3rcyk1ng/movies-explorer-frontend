@@ -41,6 +41,7 @@ function MoviesCardList({
           </div>
             : tumblerFilteredArray.slice(0, amountShowCards).map((movie) => (
           <MoviesCard
+            key={movie._id}
             movie={movie}
             handleCardDelete={handleCardDelete}
             handleCardSave={handleCardSave}
