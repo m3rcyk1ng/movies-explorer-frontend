@@ -64,7 +64,6 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
         const actualSavedFilms = checkCurrentUserMovies(res.data)
         localStorage.setItem('userFilms', JSON.stringify(actualSavedFilms));
         setUserMovies(actualSavedFilms);
-        console.log('res', res);
       })
         .catch(console.log)
         .finally(() => setIsLoadingMovies(false));
