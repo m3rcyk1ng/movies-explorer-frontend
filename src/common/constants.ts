@@ -69,6 +69,7 @@ export const footer = {
 export const authForm = {
   Email: 'E-mail',
   Pass: 'Пароль',
+  NotValid: 'Email не валиден',
 }
 
 export const buttonMore = {

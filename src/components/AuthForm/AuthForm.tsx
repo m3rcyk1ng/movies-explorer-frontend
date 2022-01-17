@@ -6,7 +6,7 @@ import { useFormWithValidation } from "../../utils/FormValidator/FormValidator";
 
 function AuthForm({ buttonText, textDescription, textLink, handleSubmitForm }: any) {
   const { pathname } = useLocation();
-  const { values, handleChange, errors, isValid } = useFormWithValidation();
+  const { values, handleChange, errors, isValid, validateEmail } = useFormWithValidation();
 
   function handleSubmit(evt: any) {
     evt.preventDefault();
@@ -20,8 +20,8 @@ function AuthForm({ buttonText, textDescription, textLink, handleSubmitForm }: a
           <div className="auth-form__container">
             <span className="auth-form__error name-input-error">{errors.name}</span>
             <input
-              id='name'
-              name='name'
+              id="name"
+              name="name"
               className="auth-form__input"
               type="text"
               placeholder="Как вас зовут?"
@@ -36,7 +36,9 @@ function AuthForm({ buttonText, textDescription, textLink, handleSubmitForm }: a
           </div>
         )}
         <div className="auth-form__container">
-          <span className="auth-form__error name-input-error">{errors.email}</span>
+          <span className="auth-form__error name-input-error">
+            {values.email.length > 1 && validateEmail(values.email) && authForm.NotValid }
+          </span>
           <input
             id="email"
             name="email"
@@ -72,17 +74,21 @@ function AuthForm({ buttonText, textDescription, textLink, handleSubmitForm }: a
             pathname === '/signin' ? 'auth-form__margin-small' : 'auth-form__margin-large'
           }`}
         >
-          <button className="auth-form__button-submit" type="submit" disabled={!isValid}>
+          <button
+            className="auth-form__button-submit"
+            type="submit"
+            disabled={validateEmail(values.email) || !isValid}
+          >
             {buttonText}
           </button>
           <div className="auth-form__sign-container">
             <p className="auth-form__caption">{textDescription}</p>
-            { pathname === '/signup' && (
+            {pathname === '/signup' && (
               <Link to="/signin" className="auth-form__link">
                 {textLink}
               </Link>
             )}
-            { pathname === '/signin' && (
+            {pathname === '/signin' && (
               <Link to="/signup" className="auth-form__link">
                 {textLink}
               </Link>
