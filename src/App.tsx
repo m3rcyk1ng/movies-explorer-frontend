@@ -27,7 +27,7 @@ function App() {
     mainApi.login(values)
       .then(() => {
         delete values.password;
-        setCurrentUser(values);
+        getUserValues();
         setLoggedIn(true);
         navigate('/movies')
       })
@@ -52,16 +52,7 @@ function App() {
       .catch(console.log);
   }
 
-  function handleEditProfile(values: any) {
-    mainApi.editUserInfo(values)
-      .then(() => {
-        setCurrentUser(values)
-      })
-      .catch(console.log);
-  }
-
-  // Проверка на входе
-  useEffect(() => {
+  function getUserValues() {
     mainApi.getUserInfo()
       .then(res => {
         setLoggedIn(true)
@@ -72,6 +63,11 @@ function App() {
         setCurrentUser({})
         console.log(err)
       })
+  }
+
+  // Проверка на входе
+  useEffect(() => {
+    getUserValues();
   },[])
 
   // Автоматическое определение размера экрана
@@ -127,7 +123,6 @@ function App() {
               component={Profile}
               loggedIn={loggedIn}
               handleSignOut={handleSignOut}
-              handleEditProfile={handleEditProfile}
             />
           }
         />

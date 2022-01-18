@@ -12,6 +12,7 @@ function SearchForm({ tumbler, setTumbler, handleFilter, arrayForSearch, moviesI
 
   function handleSearchMovie(evt: any) {
     evt.preventDefault();
+
     handleFilter(arrayForSearch, values.searchInput);
   }
 

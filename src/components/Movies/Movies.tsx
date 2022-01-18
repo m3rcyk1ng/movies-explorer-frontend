@@ -53,7 +53,10 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
     });
   }, []);
 
+  const currentUserId = currentUser._id;
+
   useEffect(() => {
+    if (!currentUserId) return;
     const localMovies = localStorage.getItem('userFilms');
 
     if (localMovies) {
@@ -62,6 +65,7 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
       setIsLoadingMovies(true);
       mainApi.getSavedMovies().then((res) => {
         const actualSavedFilms = checkCurrentUserMovies(res.data)
+
         localStorage.setItem('userFilms', JSON.stringify(actualSavedFilms));
         setUserMovies(actualSavedFilms);
       })
@@ -69,17 +73,13 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
         .finally(() => setIsLoadingMovies(false));
 
     }
-  }, []);
+  }, [currentUserId]);
 
   function checkCurrentUserMovies(movies: IMovie[]) {
     const newSavedMovieList = movies.filter(
-      (movie:IMovie) => movie.owner === currentUser._id)
+      (movie:IMovie) => movie.owner === currentUserId);
     return newSavedMovieList;
   }
-
-  useEffect(() => {
-    localStorage.setItem('userFilms', JSON.stringify(userMovies));
-  }, [userMovies])
 
   function handleDeleteCard(movie: IMovie) {
 
@@ -90,6 +90,7 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
       .then(() => {
         const newUserMovies = userMovies.filter((movie: IMovie) => movie._id !== movieId);
         setUserMovies(newUserMovies);
+        localStorage.setItem('userFilms', JSON.stringify(newUserMovies));
       })
       .catch(console.log)
   }
@@ -98,8 +99,8 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
     delete movie.owner;
     mainApi.saveMovie(movie)
       .then((res) => {
-        console.log(res);
         setUserMovies([...userMovies, res.data])
+        localStorage.setItem('userFilms', JSON.stringify([...userMovies, res.data]));
       })
       .catch(console.log)
   }
@@ -108,7 +109,7 @@ function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }:
     setIsLoadingMovies(true);
     setTimeout(() => setIsLoadingMovies(false), 1500)
     const newArray: IMovie[] = arrayForSearch.filter((card) => {
-      if (card.nameRU.toLowerCase().includes(query)) {
+      if (card.nameRU.toLowerCase().includes(query.toLowerCase())) {
         return card;
       }
     });

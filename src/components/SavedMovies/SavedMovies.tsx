@@ -14,11 +14,9 @@ function SavedMovies({ loggedIn, amountShowCards, setAmountShowCards, addShowCar
   const { currentUser } = React.useContext(CurrentUserContext);
   const [errorText, setErrorText] = useState('');
   const [error, setError] = useState(false);
-  const [savedMoviesInputValue, setSavedMoviesInputValue] = useState('');
 
   useEffect(() => {
     const localMovies = localStorage.getItem('userFilms');
-
     if (localMovies) {
       setUserMovies(JSON.parse(localMovies));
     } else {
@@ -55,14 +53,14 @@ function SavedMovies({ loggedIn, amountShowCards, setAmountShowCards, addShowCar
 
   function handleSavedMoviesFilter(arrayForSearch: IMovie[], query: string) {
     const newArray: IMovie[] = arrayForSearch.filter((card) => {
-      if (card.nameRU.toLowerCase().includes(query)) {
+      if (card.nameRU.toLowerCase().includes(query.toLowerCase())) {
         return card;
       }
     });
     if (newArray.length === 0) {
       setError(true);
       setErrorText('Ничего не найдено');
-    } else if (savedMoviesInputValue.length === 0) {
+    } else if (query.length === 0) {
       setError(true);
       setErrorText('Нужно ввести ключевое слово');
     } else {

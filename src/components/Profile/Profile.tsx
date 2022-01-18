@@ -1,18 +1,30 @@
-import React, { useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import AuthTitle from '../AuthTitle/AuthTitle';
 import './Profile.styles.css';
 import { profile } from '../../common/constants';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useFormWithValidation } from '../../utils/FormValidator/FormValidator';
 import Header from '../Header/Header';
+import {mainApi} from "../../utils/MainApi/MainApi";
 
-function Profile({ loggedIn, handleSignOut, handleEditProfile }: any) {
+function Profile({ loggedIn, handleSignOut }: any) {
   const { currentUser, setCurrentUser } = React.useContext(CurrentUserContext);
   const { values, handleChange, errors, isValid, setValues, validateEmail } = useFormWithValidation();
+  const [successMessage , setSuccessMessage] = useState<String>('');
 
   function handleUpdateProfileInfo(evt: any) {
     evt.preventDefault();
     handleEditProfile(values);
+  }
+
+  function handleEditProfile(values: any) {
+    mainApi.editUserInfo(values)
+      .then(() => {
+        setCurrentUser(values);
+        setSuccessMessage('Успешно!');
+        setTimeout(() => setSuccessMessage(''), 3000);
+      })
+      .catch(console.log);
   }
 
   useEffect(() => {
@@ -24,7 +36,7 @@ function Profile({ loggedIn, handleSignOut, handleEditProfile }: any) {
       <Header loggedIn={loggedIn} />
       <section className="profile">
         <AuthTitle classStyle={'profile'} titleText={`Здравствуй, ${currentUser.name}!`} />
-        <form className="profile__form" onSubmit={handleUpdateProfileInfo} >
+        <form className="profile__form" onSubmit={handleUpdateProfileInfo}>
           <div className="profile__string">
             <input
               id="name"
@@ -63,7 +75,19 @@ function Profile({ loggedIn, handleSignOut, handleEditProfile }: any) {
           <span className="profile__error_message">
             {validateEmail(values.email) && 'Email не валиден'}
           </span>
-          <button className="profile__button-edit" type="submit" disabled={!isValid || validateEmail(values.email)} >
+          <span className="profile__success_message">
+            {successMessage}
+          </span>
+          <button
+            className="profile__button-edit"
+            type="submit"
+            disabled={
+              !isValid ||
+              validateEmail(values.email) ||
+              (values.name === currentUser.name &&
+              values.email === currentUser.email)
+            }
+          >
             {profile.Edit}
           </button>
         </form>
