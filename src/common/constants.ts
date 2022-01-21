@@ -65,3 +65,58 @@ export const footer = {
   Git: 'GitHub',
   Telegram: 'Telegram'
 }
+
+export const authForm = {
+  Email: 'E-mail',
+  Pass: 'Пароль',
+  NotValid: 'Email не валиден',
+}
+
+export const buttonMore = {
+  More: 'Ещё',
+}
+
+export const login = {
+  Logo: 'Логотип',
+  Glad: 'Рады видеть!',
+  Signin: 'Войти',
+  NotRegistred: 'Ещё не зарегистрированы?',
+  Registration: 'Регистрация'
+}
+
+export const register = {
+  Logo: 'Логотип',
+  Welcome: 'Добро пожаловать!',
+  Signup: 'Зарегистрироваться',
+  Description: 'Уже зарегистрированы?',
+  Login: 'Войти'
+}
+
+export const navigation = {
+  Main: 'Главная',
+  Films: 'Фильмы',
+  SavedFilms: 'Сохраненные фильмы',
+  Account: 'Аккаунт',
+}
+
+export const pageNotFound = {
+  Amount: '404',
+  Description: 'Страница не найдена',
+  Back: 'Назад',
+}
+
+export const profile = {
+  Name: 'Имя',
+  Email: 'E-mail',
+  Edit: 'Редактировать',
+  Logout: 'Выйти из аккаунта',
+}
+
+export const searchForm = {
+  Search: 'Поиск',
+  ShortFilms: 'Короткометражки',
+}
+
+export const movieCard = {
+  Poster: 'Постер фильма',
+}

@@ -5,7 +5,7 @@ import { buttons } from '../../common/constants';
 import Navigation from '../Navigation/Navigation';
 import { useLocation, Link } from 'react-router-dom';
 
-function Header() {
+function Header({ loggedIn }: any) {
   const { pathname } = useLocation();
 
   return (
@@ -14,7 +14,7 @@ function Header() {
         <Link to="/">
           <img className="header__logo" src={logo} alt="Логотип" />
         </Link>
-        {pathname === '/' ? (
+        {loggedIn ? <Navigation /> : (
           <nav className="header__buttons_container">
             <Link className="header__register" to="/signup">
               {buttons.Reg}
@@ -23,8 +23,6 @@ function Header() {
               {buttons.Signin}
             </Link>
           </nav>
-        ) : (
-          <Navigation />
         )}
       </div>
     </header>
