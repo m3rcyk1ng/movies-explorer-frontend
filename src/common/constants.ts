@@ -60,7 +60,7 @@ export const portfolio = {
 
 export const footer = {
   Title: 'Учебный проект Яндекс.Практикум х BeatFilm.',
-  Copyright: '© 2021',
+  Copyright: '© 2022',
   Yandex: 'Яндекс.Практикум',
   Git: 'GitHub',
   Telegram: 'Telegram'
