@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Navigation.styles.css';
 import { NavLink } from 'react-router-dom';
-import * as events from "events";
+import { navigation } from "../../common/constants";
 
 function Navigation() {
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
@@ -31,7 +31,7 @@ function Navigation() {
               `navigation__link ${isActive && 'navigation__link_active'}`
             }
           >
-            Главная
+            {navigation.Main}
           </NavLink>
           <NavLink
             to="/movies"
@@ -39,7 +39,7 @@ function Navigation() {
               `navigation__link ${isActive && 'navigation__link_active'}`
             }
           >
-            Фильмы
+            {navigation.Films}
           </NavLink>
           <NavLink
             to="/saved-movies"
@@ -47,7 +47,7 @@ function Navigation() {
               `navigation__link ${isActive && 'navigation__link_active'}`
             }
           >
-            Сохранённые фильмы
+            {navigation.SavedFilms}
           </NavLink>
           <NavLink
             to="/profile"
@@ -55,7 +55,7 @@ function Navigation() {
               `navigation__btn-account ${isActive && 'navigation__link_active'}`
             }
           >
-            Аккаунт
+            {navigation.Account}
           </NavLink>
         </div>
       </div>

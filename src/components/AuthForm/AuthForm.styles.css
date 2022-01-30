@@ -53,6 +53,10 @@
     cursor: pointer;
 }
 
+.auth-form__button-submit:disabled {
+    opacity: .3;
+}
+
 .auth-form__button-submit:hover {
     opacity: .7;
 }

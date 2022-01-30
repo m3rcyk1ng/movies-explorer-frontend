@@ -1,15 +1,177 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
-import ButtonMore from '../ButtonMore/ButtonMore';
+import { moviesApi } from '../../utils/MoviesApi/MoviesApi';
+import { IMovie } from './IMovies';
+import moviePoster from '../../assets/images/gordonPoster.png';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
+import { mainApi } from "../../utils/MainApi/MainApi";
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import './Movies.styles.css';
 
-function Movies() {
+function Movies({ loggedIn, amountShowCards, setAmountShowCards, addShowCards }: any) {
+  const [initialMovies, setInitialMovies] = useState([]);
+  const [allMoviesFormated, setAllMoviesFormated] = useState<IMovie[]>([]); // ФИЛЬМЫ С АПИ
+  const [userMovies , setUserMovies] = useState<IMovie[]>([]); // СОХРАНЕННЫЕ ФИЛЬМ НА НАШ БЭК
+  const [moviesTumbler, setMoviesTumbler] = useState<boolean>(false); // КОРОТКОМЕТРАЖКИ
+  const [moviesInputValue, setMoviesInputValue] = useState(''); // ЗАПРОС ПОИСКА
+  const [renderFilms, setRenderFilms] = useState<IMovie[]>([]); // ФИЛЬМЫ ДЛЯ ОТРИСОВКИ
+  const { currentUser } = React.useContext(CurrentUserContext)
+  const [errorText, setErrorText] = useState('');
+  const [error, setError] = useState(false);
+  const [isLoadingMovies , setIsLoadingMovies] = useState(false);
+
+  function formatMovies(movies: any) {
+    return movies.map((movie: any) => {
+      const newMovie: IMovie = {
+        country: movie.country ? movie.country : 'Не указано',
+        director: movie.director ? movie.director : 'Не указано',
+        duration: movie.duration ? movie.duration : 0,
+        year: movie.year ? movie.year : 'Не указано',
+        description: movie.description ? movie.description : 'Не указано',
+        image: movie.image.url ? `https://api.nomoreparties.co${movie.image.url}` : moviePoster,
+        trailer: movie.trailerLink
+          ? movie.trailerLink
+          : `https://www.youtube.com/results?search_query=смотреть+без+регистрации+и+смс+${movie.nameRU}`,
+        thumbnail: movie.image.formats.thumbnail.url
+          ? `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`
+          : moviePoster,
+        owner: movie.owner ? movie.owner : 'Не указано',
+        movieId: movie.id,
+        nameEN: movie.nameEN ? movie.nameEN : 'Не указано',
+        nameRU: movie.nameRU ? movie.nameRU : 'Не указано',
+      };
+      return newMovie;
+    });
+  }
+
+  useEffect(() => {
+    moviesApi.getBeatfilmMovies().then((allMovies) => {
+      setInitialMovies(allMovies);
+      setAllMoviesFormated(formatMovies(allMovies));
+    });
+  }, []);
+
+  const currentUserId = currentUser._id;
+
+  useEffect(() => {
+    if (!currentUserId) return;
+    const localMovies = localStorage.getItem('userFilms');
+
+    if (localMovies) {
+      setUserMovies(JSON.parse(localMovies));
+    } else {
+      setIsLoadingMovies(true);
+      mainApi.getSavedMovies().then((res) => {
+        const actualSavedFilms = checkCurrentUserMovies(res.data)
+
+        localStorage.setItem('userFilms', JSON.stringify(actualSavedFilms));
+        setUserMovies(actualSavedFilms);
+      })
+        .catch(console.log)
+        .finally(() => setIsLoadingMovies(false));
+
+    }
+  }, [currentUserId]);
+
+  function checkCurrentUserMovies(movies: IMovie[]) {
+    const newSavedMovieList = movies.filter(
+      (movie:IMovie) => movie.owner === currentUserId);
+    return newSavedMovieList;
+  }
+
+  function handleDeleteCard(movie: IMovie) {
+
+    const currMovie = userMovies.find((userMovie: { movieId: number; }) => userMovie.movieId === movie.movieId)
+    const movieId = currMovie?._id
+    // @ts-ignore
+    mainApi.deleteMovie(movieId)
+      .then(() => {
+        const newUserMovies = userMovies.filter((movie: IMovie) => movie._id !== movieId);
+        setUserMovies(newUserMovies);
+        localStorage.setItem('userFilms', JSON.stringify(newUserMovies));
+      })
+      .catch(console.log)
+  }
+
+  function handleSaveCard(movie: IMovie) {
+    delete movie.owner;
+    mainApi.saveMovie(movie)
+      .then((res) => {
+        setUserMovies([...userMovies, res.data])
+        localStorage.setItem('userFilms', JSON.stringify([...userMovies, res.data]));
+      })
+      .catch(console.log)
+  }
+
+  function handleMoviesFilter(arrayForSearch: IMovie[], query: string) {
+    setIsLoadingMovies(true);
+    setTimeout(() => setIsLoadingMovies(false), 1500)
+    const newArray: IMovie[] = arrayForSearch.filter((card) => {
+      if (card.nameRU.toLowerCase().includes(query.toLowerCase())) {
+        return card;
+      }
+    });
+    if (newArray.length === 0) {
+      setError(true);
+      setErrorText('Ничего не найдено');
+    } else if (query.length === 0) {
+      setError(true);
+      setErrorText('Нужно ввести ключевое слово');
+    } else {
+      setError(false);
+    }
+    localStorage.setItem('filterCards', JSON.stringify(newArray));
+    setRenderFilms(newArray);
+    localStorage.setItem('moviesInputValue', JSON.stringify(query));
+    localStorage.setItem('moviesTumbler', JSON.stringify(moviesTumbler));
+  }
+
+  useEffect(() => {
+    const localFilterCards = localStorage.getItem('filterCards');
+    if (localFilterCards) setRenderFilms(JSON.parse(localFilterCards));
+
+    const localTumbler = localStorage.getItem('moviesTumbler');
+    if (localTumbler) setMoviesTumbler(JSON.parse(localTumbler));
+
+    const localMoviesInputValue = localStorage.getItem('moviesInputValue');
+    if (localMoviesInputValue) setMoviesInputValue(JSON.parse(localMoviesInputValue));
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('moviesTumbler', JSON.stringify(moviesTumbler))
+  }, [moviesTumbler])
+
   return (
-    <div className="movies">
-      <SearchForm />
-      <MoviesCardList />
-      <ButtonMore />
-    </div>
+    <>
+      <Header loggedIn={loggedIn} />
+      <div className="movies">
+        <SearchForm
+          tumbler={moviesTumbler}
+          setTumbler={setMoviesTumbler}
+          handleFilter={handleMoviesFilter}
+          arrayForSearch={allMoviesFormated}
+          moviesInputValue={moviesInputValue}
+        />
+        {error ? (
+          <p className="error-text">{errorText}</p>
+        ) : (
+          <MoviesCardList
+            isLoadingMovies={isLoadingMovies}
+            renderFilms={renderFilms}
+            handleCardDelete={handleDeleteCard}
+            userMovies={userMovies}
+            handleCardSave={handleSaveCard}
+            amountShowCards={amountShowCards}
+            setAmountShowCards={setAmountShowCards}
+            addShowCards={addShowCards}
+            tumbler={moviesTumbler}
+          />
+        )}
+      </div>
+      <Footer />
+    </>
   );
 }
 
