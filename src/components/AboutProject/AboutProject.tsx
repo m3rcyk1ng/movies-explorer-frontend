@@ -8,11 +8,11 @@ function AboutProject() {
         <div className="about__container">
       <h2 className="about__title">{aboutText.Title}</h2>
       <div className="about__grid_container">
-          <div className="about__hyeta">
+          <div className="about__container_text">
           <h3 className="about__subtitle">{aboutText.Steps}</h3>
           <p className="about__description">{aboutText.StepsDescription}</p>
           </div>
-          <div className="about__hyeta">
+          <div className="about__container_text">
           <h3 className="about__subtitle">{aboutText.Time}</h3>
           <p className="about__description">{aboutText.TimeDescription}</p>
           </div>
